@@ -25,7 +25,8 @@ export class FormComponent implements OnInit {
   setOfSkills: string = "";
   filename: string = "*Choose file...";
   baseUrl: string;
-  BASE_URL: string = "https://devpartners.co/pooling/api/";
+  // BASE_URL: string = "https://devpartners.co/pooling/api/";
+  BASE_URL: string = "http://13.75.89.123:8081/pooling/api/";
  
 
 
