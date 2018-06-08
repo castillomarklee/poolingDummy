@@ -1,0 +1,93 @@
+
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
+      <div *ngIf="conflictEmail" class="alert alert-danger" role="alert" align="center">
+        Email already exist
+      </div>
+
+      <div align="center" class="header ">
+        <img src="https://devpartners.co/assets/img/logos/devpartners-logo-footer.png?v=1" />
+        <h3 class="title">Application Form</h3>
+      </div>
+
+      <div class="content div-shadow">
+
+        <form>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">*First name</label>
+                <input type="text" class="form-control" (keyup)="setFirstName($event)" required ngModel>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">*Last name</label>
+                <input type="text" class="form-control" (keyup)="setLastName($event)" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">*Contact number</label>
+                <input type="text" class="form-control" (keyup)="setContact($event)" required>
+              </div>
+            </div>
+            <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">*Email</label>
+                <input type="email" class="form-control" (keyup)="setEmail($event)" required>
+                <div class="invalid-feedback">Invalid email</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">*Address</label>
+                  <input type="text" class="form-control" (keyup)="setAddress($event)" required>
+                  <div class="invalid-feedback">Please put your address</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="">*Upload CV</label>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="validatedCustomFile" required (change)="setFiles($event.target.files)" accept="application/pdf, application/vnd.ms-excel,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                  <label class="custom-file-label" for="validatedCustomFile">{{filename}}</label>
+                  <div class="invalid-feedback">Example invalid custom file feedback</div>
+                </div>
+            </div>
+          </div>
+          <div class="row skills-container">
+            <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 " style="margin-bottom: 10px;">
+              <h5>Skills (<span>select all that apply</span>) :</h5>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 " *ngFor="let skills of ListSkill">
+              <label class="container-checkbox">
+                {{skills.skillName}}
+                <input type="checkbox" value="{{skills.skillId}}" id="{{skills.skillId}}" (change)="addSkills($event)">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+          <input *ngIf="buttonDisabled" type="button" class="btn btn-secondary btn-lg btn-block background-primary " value="Submit" (click)="processApplication()">
+          <input *ngIf="!buttonDisabled" type="button" class="btn btn-secondary btn-lg btn-block background-primary" value="Submit" disabled>
+        </form>
+
+      </div>
+
+
+    </div>
+  </div>
+
+  
+  <div id="overlay" align="center">
+    <div class="loader"></div>
+  </div>
+
+
+</div>
+
+
