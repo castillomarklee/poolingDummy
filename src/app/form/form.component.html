@@ -1,93 +1,137 @@
 
 <div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
-      <div *ngIf="conflictEmail" class="alert alert-danger" role="alert" align="center">
-        Email already exist
-      </div>
-
-      <div align="center" class="header ">
-        <img src="https://devpartners.co/assets/img/logos/devpartners-logo-footer.png?v=1" />
-        <h3 class="title">Application Form</h3>
-      </div>
-
-      <div class="content div-shadow">
-
-        <form>
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-              <div class="form-group">
-                <label for="exampleFormControlInput1">*First name</label>
-                <input type="text" class="form-control" (keyup)="setFirstName($event)" required ngModel>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-              <div class="form-group">
-                <label for="exampleFormControlInput1">*Last name</label>
-                <input type="text" class="form-control" (keyup)="setLastName($event)" required>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-              <div class="form-group">
-                <label for="exampleFormControlInput1">*Contact number</label>
-                <input type="text" class="form-control" (keyup)="setContact($event)" required>
-              </div>
-            </div>
-            <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-              <div class="form-group">
-                <label for="exampleFormControlInput1">*Email</label>
-                <input type="email" class="form-control" (keyup)="setEmail($event)" required>
-                <div class="invalid-feedback">Invalid email</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">*Address</label>
-                  <input type="text" class="form-control" (keyup)="setAddress($event)" required>
-                  <div class="invalid-feedback">Please put your address</div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
-                <label for="">*Upload CV</label>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="validatedCustomFile" required (change)="setFiles($event.target.files)" accept="application/pdf, application/vnd.ms-excel,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                  <label class="custom-file-label" for="validatedCustomFile">{{filename}}</label>
-                  <div class="invalid-feedback">Example invalid custom file feedback</div>
-                </div>
-            </div>
-          </div>
-          <div class="row skills-container">
-            <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 " style="margin-bottom: 10px;">
-              <h5>Skills (<span>select all that apply</span>) :</h5>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 " *ngFor="let skills of ListSkill">
-              <label class="container-checkbox">
-                {{skills.skillName}}
-                <input type="checkbox" value="{{skills.skillId}}" id="{{skills.skillId}}" (change)="addSkills($event)">
-                <span class="checkmark"></span>
-              </label>
-            </div>
-          </div>
-          <input *ngIf="buttonDisabled" type="button" class="btn btn-secondary btn-lg btn-block background-primary " value="Submit" (click)="processApplication()">
-          <input *ngIf="!buttonDisabled" type="button" class="btn btn-secondary btn-lg btn-block background-primary" value="Submit" disabled>
-        </form>
-
-      </div>
-
-
-    </div>
-  </div>
-
+    <div class="row justify-content-md-center">
+      <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ">
+        <div *ngIf="conflictEmail" class="alert alert-danger" role="alert" align="center">
+          Email already exist
+        </div>
   
-  <div id="overlay" align="center">
-    <div class="loader"></div>
+        <div align="center" class="header ">
+          <img src="https://devpartners.co/assets/img/logos/devpartners-logo-footer.png?v=1" />
+          <h3 class="title">Application Form</h3>
+        </div>
+  
+        <div class="content div-shadow">
+  
+          <form
+          novalidate
+          (ngSubmit)="submitUserForm()" 
+          [formGroup]="userFormgroup">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <div class="form-group"
+                [ngClass]="{'has-error': (userFormgroup.get('firstname').touched || userFormgroup.get('firstname').dirty) && !userFormgroup.get('firstname').valid }">
+                  <label for="exampleFormControlInput1">*First name</label>
+                  <input type="text" class="form-control" id="firstnameId" formControlName="firstname">
+                  <span class="help-block" *ngIf="(userFormgroup.get('firstname').touched || userFormgroup.get('firstname').dirty) && userFormgroup.get('firstname').errors">
+                    <span *ngIf="userFormgroup.get('firstname').errors.required">
+                        Please enter your first name.
+                    </span>
+                    <span *ngIf="userFormgroup.get('firstname').errors.minlength">
+                        The first name must be longer than 3 characters.
+                    </span>
+                </span>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <div class="form-group"
+                [ngClass]="{'has-error': (userFormgroup.get('lastname').touched || userFormgroup.get('lastname').dirty) }">
+                  <label for="exampleFormControlInput1">*Last name</label>
+                  <input type="text" class="form-control" formControlName="lastname" id="lastnameId">
+                  <span class="help-block" *ngIf="(userFormgroup.get('lastname').touched || userFormgroup.get('lastname').dirty) && userFormgroup.get('lastname').errors">
+                      <span *ngIf="userFormgroup.get('lastname').errors.required">
+                          Please enter your lastname name.
+                      </span>
+                      <span *ngIf="userFormgroup.get('lastname').errors.minlength">
+                          The lastname name must be longer than 3 characters.
+                      </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <div class="form-group"
+                [ngClass]="{'has-error': (userFormgroup.get('userContact').touched || userFormgroup.get('userContact').dirty) }">
+                  <label for="exampleFormControlInput1">*Contact number</label>
+                  <input type="text" class="form-control" formControlName="userContact" id="contactId">
+                  <span class="help-block" *ngIf="(userFormgroup.get('userContact').touched || userFormgroup.get('userContact').dirty) && userFormgroup.get('userContact').errors">
+                      <span *ngIf="userFormgroup.get('userContact').errors.required">
+                          Please enter your contact.
+                      </span>
+                      <span *ngIf="userFormgroup.get('lastname').errors.minlength">
+                          The lastname name must be longer than 3 characters.
+                      </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <div class="form-group"
+                [ngClass]="{ 'has-error': (userFormgroup.get('email').touched || userFormgroup.get('email').dirty) }">
+                  <label for="exampleFormControlInput1">*Email</label>
+                  <input type="email" class="form-control" formControlName="email" id="emailId">
+                  <span class="help-block" *ngIf="(userFormgroup.get('email').touched || userFormgroup.get('email').dirty) && userFormgroup.get('email').errors">
+                      <span *ngIf="userFormgroup.get('email').errors.required">
+                          Please enter your email name.
+                      </span>
+                      <span *ngIf="userFormgroup.get('email').errors.pattern">
+                          Please enter a valid email address
+                      </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                  <div class="form-group"
+                  [ngClass]="{ 'has-error': (userFormgroup.get('address').touched || userFormgroup.get('address').dirty) }">
+                    <label for="exampleFormControlInput1">*Address</label>
+                    <input type="text" class="form-control" formControlName="address" id="addressId">
+                    <span class="help-block" *ngIf="(userFormgroup.get('address').touched || userFormgroup.get('address').dirty) && userFormgroup.get('address').errors">
+                        <span *ngIf="userFormgroup.get('address').errors.required">
+                            Please enter your address name.
+                        </span>
+                    </span>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                  <label for="">*Upload CV</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile" formControlName="fileCV" (change)="setFiles($event.target.files)" accept="application/pdf, application/vnd.ms-excel,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                    <label class="custom-file-label" for="validatedCustomFile">{{filename}}</label>
+                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                  </div>
+              </div>
+            </div>
+            <div class="row skills-container">
+              <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 " style="margin-bottom: 10px;">
+                <h5>Skills (<span>select all that apply</span>) :</h5>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 " *ngFor="let skills of ListSkill">
+                <label class="container-checkbox">
+                  {{skills.skillName}}
+                  <input type="checkbox" value="{{skills.skillId}}" id="{{skills.skillId}}" (change)="addSkills($event)">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-lg btn-block background-primary" type="submit" [disabled]="!userFormgroup.valid">Next</button>
+          </form>
+          <br>Dirty: {{ userFormgroup.dirty }} 
+          <br>Touched: {{ userFormgroup.touched }}
+          <br>Valid: {{ userFormgroup.valid }}
+          <br>Value: {{ userFormgroup.value | json }}
+        </div>
+      </div>
+    </div>
+  
+    
+    <div id="overlay" align="center">
+      <div class="loader"></div>
+    </div>
+  
+  
   </div>
-
-
-</div>
-
-
+  
+  
+  

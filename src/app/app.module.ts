@@ -9,6 +9,7 @@ import { HttpModule } from '@angular/http'
 import { InterceptorModule } from './interceptor.module';
 import { ApplicationComponent } from './application/application.component';
 import { DataService } from "./data.service";
+import { ReactiveFormsModule } from '@angular/forms';
 const routes: Routes = [
   {
     path: '',
@@ -30,6 +31,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
+    ReactiveFormsModule,
     HttpClientModule,
     InterceptorModule,
     HttpModule
